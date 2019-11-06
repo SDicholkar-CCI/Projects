@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using EmployeeReviewApp.DAL;
 using EmployeeReviewApp.Models;
+using EmployeeReviewApp.Methods;
 
 namespace EmployeeReviewApp.Controllers
 {
@@ -16,6 +17,11 @@ namespace EmployeeReviewApp.Controllers
         private EmployeeContext db = new EmployeeContext();
 
         // GET: Login
+        public IEmployeeReview empReview;
+        public LoginController()
+        {
+            empReview = new EmployeeReview();
+        }
         public ActionResult Index()
         {
             return View();
@@ -23,7 +29,21 @@ namespace EmployeeReviewApp.Controllers
         [HttpPost]
         public ActionResult AuthorizeUser(User user)
         {
-            return View();
+            int userId = empReview.CheckForValidUser(user);
+            var ratingResult = empReview.RatingExistsForEmployee(userId);
+            if(userId == 0)
+            {
+                return View("Index");
+            }
+            else if(ratingResult.Count > 0 && userId > 0)
+            {
+                return RedirectToAction("DisplayDeveloperAndTechnicalSkill", "EmployeeDeveloperTechnicalSkill", new { userId = userId });
+            }
+            else
+            {
+                return RedirectToAction("Index", "EmployeeDeveloperTechnicalSkill", new { hdnCount = 0,userId = userId});
+            }
+            
         }
 
         // GET: Login/Details/5
