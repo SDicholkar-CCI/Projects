@@ -13,7 +13,8 @@ namespace EmployeeReviewApp.DAL
             var users = new List<User>()
             {
                 new User{ Name="Swapnil",Designation="Developer"},
-                new User{ Name="Rahul",Designation="Junior Developer"}
+                new User{ Name="Rahul",Designation="Junior Developer"},
+                new User{ Name="Sam",Designation="Team Lead"}
             };
 
             users.ForEach(user => context.Users.Add(user));

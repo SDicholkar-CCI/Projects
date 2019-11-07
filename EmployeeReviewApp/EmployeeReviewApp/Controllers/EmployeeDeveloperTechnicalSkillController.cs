@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace EmployeeReviewApp.Controllers
 {
+    [Authorize]
     public class EmployeeDeveloperTechnicalSkillController : Controller
     {
         public IEmployeeReview empReview;
@@ -26,50 +27,51 @@ namespace EmployeeReviewApp.Controllers
         // GET: EmployeeDeveloperTechnicalSkill
         public ActionResult Index(int? hdnCount,int? userId)
         {
+            ViewBag.showSignOutButton = true;
             hdnCount = hdnCount == null ? 0 : hdnCount;
             if(userId!=null)
             {
                 LoginUserId = userId ?? 0;
             }
             
-            ViewBag.hideNextbtn = true;
-            if (employeeDeveloperTechnicalSkill != null && employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales == null)
-            {
-                employeeDeveloperTechnicalSkill = empReview.GetDeveloperTechnicalSKillAndScales();
-            }
-            if (hdnCount < employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales.Count && !IsTechincalSkill)
-            {
-                var singleSkill = employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales[hdnCount ?? 0];
-                List<EmployeeDeveloperSkillAndScale> employeeSkillScale = new List<EmployeeDeveloperSkillAndScale>()
+                if (employeeDeveloperTechnicalSkill != null && employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales == null)
+                {
+                    employeeDeveloperTechnicalSkill = empReview.GetDeveloperTechnicalSKillAndScales();
+                }
+                if (hdnCount < employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales.Count && !IsTechincalSkill)
+                {
+                    var singleSkill = employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales[hdnCount ?? 0];
+                    List<EmployeeDeveloperSkillAndScale> employeeSkillScale = new List<EmployeeDeveloperSkillAndScale>()
                 {
                     new EmployeeDeveloperSkillAndScale { developerSkill = singleSkill.developerSkill, developerSkillScales = singleSkill.developerSkillScales}
                 };
-                employeeSkillResult.employeeDeveloperSkillAndScales = employeeSkillScale;
+                    employeeSkillResult.employeeDeveloperSkillAndScales = employeeSkillScale;
 
-                if(hdnCount == employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales.Count-1)
-                {
-                    IsTechincalSkill = true;
-                    hdnCount = 0;
                 }
-            }
-            else
-            {
-                var singleSkill = employeeDeveloperTechnicalSkill.employeeTechnicalSkillAndScales[hdnCount ?? 0];
-                List<EmployeeTechnicalSkillAndScale> employeeSkillScale = new List<EmployeeTechnicalSkillAndScale>()
+                else
                 {
-                    new EmployeeTechnicalSkillAndScale { technicalSkill = singleSkill.technicalSkill, technicalSkillScales = singleSkill.technicalSkillScales}
-                };
-                employeeSkillResult.employeeTechnicalSkillAndScales = employeeSkillScale;
-            }
+                    if (!IsTechincalSkill)
+                    {
+                        hdnCount = 0;
+                        IsTechincalSkill = true;
+                    }
+                    if (hdnCount < employeeDeveloperTechnicalSkill.employeeTechnicalSkillAndScales.Count)
+                    {
+                        var singleSkill = employeeDeveloperTechnicalSkill.employeeTechnicalSkillAndScales[hdnCount ?? 0];
+                        List<EmployeeTechnicalSkillAndScale> employeeSkillScale = new List<EmployeeTechnicalSkillAndScale>()
+                    {
+                        new EmployeeTechnicalSkillAndScale { technicalSkill = singleSkill.technicalSkill, technicalSkillScales = singleSkill.technicalSkillScales}
+                    };
+                        employeeSkillResult.employeeTechnicalSkillAndScales = employeeSkillScale;
+                    }
+                }
 
-            if(IsTechincalSkill && hdnCount==0)
-            {
-                ViewBag.Count = 0;
-            }
-            else
-            {
-                ViewBag.Count = hdnCount + 1;
-            }
+                if (employeeSkillResult.employeeTechnicalSkillAndScales.Count == 0 && employeeSkillResult.employeeDeveloperSkillAndScales.Count == 0)
+                {
+                    return RedirectToAction("DisplayDeveloperAndTechnicalSkill", new { userId = LoginUserId });
+                }
+            
+            ViewBag.Count = hdnCount + 1;
             
 
             return View(employeeSkillResult);
@@ -78,19 +80,21 @@ namespace EmployeeReviewApp.Controllers
         [HttpPost]
         public ActionResult SaveDeveloperSkill(int? hdnCount, int hdnDeveloperSkill, int btnRadioScaleId, string description)
         {
-            UserDeveloperSkill userDeveloperSkill = new UserDeveloperSkill();
-            userDeveloperSkill.DeveloperSkillId = hdnDeveloperSkill;
-            userDeveloperSkill.DeveloperSkillScaleId = btnRadioScaleId;
-            userDeveloperSkill.Description = description;
-            userDeveloperSkill.UserId = LoginUserId;
-
-            //empReview.SaveDeveloperSkill(userDeveloperSkill);
+            if (!IsTechincalSkill)
+            {
+                empReview.SaveDeveloperSkill(hdnDeveloperSkill ,btnRadioScaleId ,description, LoginUserId);
+            }
+            else
+            {
+                empReview.SaveTechnicalSkill(hdnDeveloperSkill, btnRadioScaleId, description, LoginUserId);
+            }
 
             return RedirectToAction("Index", new { hdnCount = hdnCount});
         }
 
         public ActionResult DisplayDeveloperAndTechnicalSkill(int userId)
         {
+            ViewBag.showSignOutButton = true;
             var result = empReview.DisplayDeveloperAndTechnicalSkill(userId);
             return View(result);
         }

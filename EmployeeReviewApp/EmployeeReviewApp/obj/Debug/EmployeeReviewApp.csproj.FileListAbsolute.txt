@@ -78,7 +78,6 @@ C:\Users\swapnil.dicholkar\source\repos\EmployeeReviewApp\EmployeeReviewApp\obj\
 C:\Users\swapnil.dicholkar\source\repos\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.dll
 C:\Users\swapnil.dicholkar\source\repos\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.pdb
 C:\Users\swapnil.dicholkar\source\repos\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csprojAssemblyReference.cache
-D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.CoreCompileInputs.cache
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\EmployeeReviewApp.dll.config
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\EmployeeReviewApp.dll
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\EmployeeReviewApp.pdb
@@ -154,7 +153,8 @@ D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Syste
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Newtonsoft.Json.xml
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Antlr3.Runtime.pdb
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csprojAssemblyReference.cache
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.CoreCompileInputs.cache
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.CopyComplete
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.dll
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.pdb
-D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csprojAssemblyReference.cache

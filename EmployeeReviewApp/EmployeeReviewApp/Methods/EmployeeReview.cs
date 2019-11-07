@@ -61,10 +61,26 @@ namespace EmployeeReviewApp.Methods
             return employeeDeveloperTechnicalSkill;
         }
 
-        public List<UserDeveloperSkill> RatingExistsForEmployee(int userId)
-        {         
-            var developerRatingResult = employeeContext.UserDeveloperSkills.Include("DeveloperSkill").Include("DeveloperSkillScale").Where(dbUser => dbUser.UserId == userId).ToList();
-            return developerRatingResult;
+        public bool RatingExistsForEmployee(int userId)
+        {
+            //var developerRatingResult = employeeContext.UserDeveloperSkills.Include("DeveloperSkill").Include("DeveloperSkillScale").Where(dbUser => dbUser.UserId == userId).ToList();
+            var developerRatingResult = (from u in employeeContext.Users
+                                         join uds in employeeContext.UserDeveloperSkills
+                                         on u.UserId equals uds.UserId
+                                         join uts in employeeContext.UserTechincalSkills
+                                         on u.UserId equals uts.UserId
+                                         where u.UserId == userId
+                                         select new { userId = u.UserId }).ToList();
+
+            if(developerRatingResult.Count >0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
         public int CheckForValidUser(User user)
@@ -73,19 +89,76 @@ namespace EmployeeReviewApp.Methods
             return userId;
         }
 
-        public void SaveDeveloperSkill(UserDeveloperSkill userDeveloperSkill)
+        public void SaveDeveloperSkill(int hdnDeveloperSkill, int btnRadioScaleId, string description, int LoginUserId)
         {
-            employeeContext.UserDeveloperSkills.Add(userDeveloperSkill);
+            UserDeveloperSkill userDeveloperSkill = new UserDeveloperSkill();
+            userDeveloperSkill.DeveloperSkillId = hdnDeveloperSkill;
+            userDeveloperSkill.DeveloperSkillScaleId = btnRadioScaleId;
+            userDeveloperSkill.Description = description;
+            userDeveloperSkill.UserId = LoginUserId;
+            if (employeeContext.UserDeveloperSkills.Any(db => db.UserId == userDeveloperSkill.UserId && 
+            db.DeveloperSkillId == userDeveloperSkill.DeveloperSkillId && 
+            db.DeveloperSkillScaleId == userDeveloperSkill.DeveloperSkillScaleId))
+            {
+                return;
+            }
+
+            var obj = employeeContext.UserDeveloperSkills.SingleOrDefault(db => db.UserId == userDeveloperSkill.UserId &&
+            db.DeveloperSkillId == userDeveloperSkill.DeveloperSkillId);
+            
+           if(obj!=null)
+            {
+                obj.DeveloperSkillScaleId = userDeveloperSkill.DeveloperSkillScaleId;
+                obj.Description = userDeveloperSkill.Description;
+            }
+            else
+            {
+                employeeContext.UserDeveloperSkills.Add(userDeveloperSkill);
+            }
+
             employeeContext.SaveChanges();
         }
 
-        public List<DeveloperSkillDetail> DisplayDeveloperAndTechnicalSkill(int userId)
+        public void SaveTechnicalSkill(int hdnDeveloperSkill, int btnRadioScaleId, string description, int LoginUserId)
         {
-            var userDeveloerSkill = employeeContext.UserDeveloperSkills.Include("DeveloperSkill").Include("DeveloperSkillScale").Where(dbUser => dbUser.UserId == userId).ToList();
-            List<DeveloperSkillDetail> developerSkillDetails = new List<DeveloperSkillDetail>();
-            foreach (var obj in userDeveloerSkill)
+            UserTechincalSkill userTechincalSkill = new UserTechincalSkill();
+            userTechincalSkill.TechnicalSkillId = hdnDeveloperSkill;
+            userTechincalSkill.TechnicalSkillScaleId = btnRadioScaleId;
+            userTechincalSkill.Description = description;
+            userTechincalSkill.UserId = LoginUserId;
+            if (employeeContext.UserTechincalSkills.Any(db => db.UserId == userTechincalSkill.UserId &&
+             db.TechnicalSkillId == userTechincalSkill.TechnicalSkillId &&
+             db.TechnicalSkillScaleId == userTechincalSkill.TechnicalSkillScaleId))
             {
-                DeveloperSkillDetail developerSkillDetailObj = new DeveloperSkillDetail();
+                return;
+            }
+
+            var obj = employeeContext.UserTechincalSkills.SingleOrDefault(db => db.UserId == userTechincalSkill.UserId &&
+            db.TechnicalSkillId == userTechincalSkill.TechnicalSkillId);
+
+            if (obj != null)
+            {
+                obj.TechnicalSkillScaleId = userTechincalSkill.TechnicalSkillScaleId;
+                obj.Description = userTechincalSkill.Description;
+            }
+            else
+            {
+                employeeContext.UserTechincalSkills.Add(userTechincalSkill);
+            }
+
+            employeeContext.SaveChanges();
+        }
+        public DisplayDeveloperTechnicalSkillAndScale DisplayDeveloperAndTechnicalSkill(int userId)
+        {
+            var userDeveloperSkill = employeeContext.UserDeveloperSkills
+                .Include("DeveloperSkill")
+                .Include("DeveloperSkillScale")
+                .Where(dbUser => dbUser.UserId == userId).ToList();
+
+            List<DeveloperTechnicalSkillScaleDetail> developerSkillDetails = new List<DeveloperTechnicalSkillScaleDetail>();
+            foreach (var obj in userDeveloperSkill)
+            {
+                DeveloperTechnicalSkillScaleDetail developerSkillDetailObj = new DeveloperTechnicalSkillScaleDetail();
                 developerSkillDetailObj.Name = obj.User.Name;
                 developerSkillDetailObj.Designation = obj.User.Designation;
                 developerSkillDetailObj.SkillName = obj.DeveloperSkill.DeveloperSkillName;
@@ -94,7 +167,30 @@ namespace EmployeeReviewApp.Methods
                 developerSkillDetails.Add(developerSkillDetailObj);
             }
 
-            return developerSkillDetails;
+            var userTechnicalSkill = employeeContext.UserTechincalSkills
+               .Include("TechnicalSkill")
+               .Include("TechnicalSkillScale")
+               .Where(dbUser => dbUser.UserId == userId).ToList();
+
+            List<DeveloperTechnicalSkillScaleDetail> technicalSkillDetails = new List<DeveloperTechnicalSkillScaleDetail>();
+            foreach (var obj in userTechnicalSkill)
+            {
+                DeveloperTechnicalSkillScaleDetail technicalSkillDetailObj = new DeveloperTechnicalSkillScaleDetail();
+                technicalSkillDetailObj.Name = obj.User.Name;
+                technicalSkillDetailObj.Designation = obj.User.Designation;
+                technicalSkillDetailObj.SkillName = obj.TechnicalSkill.TechnicalSkillName;
+                technicalSkillDetailObj.ScaleName = obj.TechnicalSkillScale.TechnicalSkillScaleName;
+                technicalSkillDetailObj.Description = obj.Description;
+                technicalSkillDetails.Add(technicalSkillDetailObj);
+            }
+
+            DisplayDeveloperTechnicalSkillAndScale displayDeveloperTechnicalSkillAndScale = new DisplayDeveloperTechnicalSkillAndScale()
+            {
+               DeveloperSkillScale = developerSkillDetails,
+               TechnicalSkillScale = technicalSkillDetails
+            };
+
+            return displayDeveloperTechnicalSkillAndScale;
         }
     }
 }

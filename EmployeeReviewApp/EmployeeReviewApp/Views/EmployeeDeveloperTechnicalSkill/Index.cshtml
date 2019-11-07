@@ -1,9 +1,9 @@
 ﻿@model EmployeeReviewApp.ViewModels.EmployeeDeveloperTechnicalSkill
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Employee Review";
 }
 <head><script src="~/Scripts/jquery-3.3.1.js"></script></head>
-<h2>Index</h2>
+<h3>Form</h3>
 @using (Html.BeginForm("SaveDeveloperSkill", "EmployeeDeveloperTechnicalSkill",FormMethod.Post))
 {
 <div class="form-horizontal">
@@ -59,30 +59,13 @@
         }
     }
     <div class="form-group">
-        @Html.TextArea("description");
+        @Html.TextArea("description")
     </div>
-    @if (ViewBag.hideNextbtn)
-    {
-        <div class="form-group">
-            <input type="submit" id="btnNext" value="Next" />
-        </div>
-    }
+
+    <div class="form-group">
+       <input type="submit" id="btnNext" value="Next" />
+    </div>
+ 
 
 </div>
 }
-
-    
-    @*<script type="text/javascript">
-        $("#btnNext").click(function () {
-            var num = $("#hdnCount").val();
-            if (num == "") {
-                $("#hdnCount").val('1');
-            }
-            else {
-                num = parseInt(num) + 1;
-                $("#hdnCount").val(num);
-            }
-            
-        });
-    </script>*@
-

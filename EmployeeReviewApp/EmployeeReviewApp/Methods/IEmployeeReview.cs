@@ -10,10 +10,11 @@ namespace EmployeeReviewApp.Methods
 {
     public interface IEmployeeReview
     {
-        List<UserDeveloperSkill> RatingExistsForEmployee(int userId);
+        bool RatingExistsForEmployee(int userId);
         EmployeeDeveloperTechnicalSkill GetDeveloperTechnicalSKillAndScales();
         int CheckForValidUser(User user);
-        void SaveDeveloperSkill(UserDeveloperSkill userDeveloperSkill);
-        List<DeveloperSkillDetail> DisplayDeveloperAndTechnicalSkill(int userId);
+        void SaveDeveloperSkill(int hdnDeveloperSkill, int btnRadioScaleId, string description, int LoginUserId);
+        void SaveTechnicalSkill(int hdnDeveloperSkill, int btnRadioScaleId, string description, int LoginUserId);
+        DisplayDeveloperTechnicalSkillAndScale DisplayDeveloperAndTechnicalSkill(int userId);
     }
 }

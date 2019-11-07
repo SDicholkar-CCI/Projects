@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using EmployeeReviewApp.DAL;
 using EmployeeReviewApp.Models;
 using EmployeeReviewApp.Methods;
+using System.Web.Security;
 
 namespace EmployeeReviewApp.Controllers
 {
@@ -22,25 +23,39 @@ namespace EmployeeReviewApp.Controllers
         {
             empReview = new EmployeeReview();
         }
+
+        public ActionResult ClearCookie()
+        {
+            ViewBag.showSignOutButton = false;
+            FormsAuthentication.SignOut();
+            HttpContext.Session.Abandon();
+            return View("Index");
+        }
         public ActionResult Index()
         {
+            ViewBag.showSignOutButton = false;
             return View();
         }
         [HttpPost]
         public ActionResult AuthorizeUser(User user)
         {
             int userId = empReview.CheckForValidUser(user);
-            var ratingResult = empReview.RatingExistsForEmployee(userId);
+            var ratingExistForEmployee = empReview.RatingExistsForEmployee(userId);
             if(userId == 0)
             {
+                ViewBag.showSignOutButton = false;
+                ViewBag.userNotFound = "User not found";
                 return View("Index");
             }
-            else if(ratingResult.Count > 0 && userId > 0)
+            else if(ratingExistForEmployee && userId > 0)
             {
+                FormsAuthentication.SetAuthCookie(userId.ToString(),false);
+                //return Redirect(FormsAuthentication.GetRedirectUrl(userId.ToString(), false));
                 return RedirectToAction("DisplayDeveloperAndTechnicalSkill", "EmployeeDeveloperTechnicalSkill", new { userId = userId });
             }
             else
             {
+                FormsAuthentication.SetAuthCookie(userId.ToString(), false);
                 return RedirectToAction("Index", "EmployeeDeveloperTechnicalSkill", new { hdnCount = 0,userId = userId});
             }
             

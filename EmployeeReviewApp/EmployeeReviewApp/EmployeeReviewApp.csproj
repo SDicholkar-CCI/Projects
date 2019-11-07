@@ -145,7 +145,8 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserTechincalSkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\DeveloperSkillDetail.cs" />
+    <Compile Include="ViewModels\DeveloperTechnicalSkillScaleDetail.cs" />
+    <Compile Include="ViewModels\DisplayDeveloperTechnicalSkillAndScale.cs" />
     <Compile Include="ViewModels\EmployeeDeveloperSkillAndScale.cs" />
     <Compile Include="ViewModels\EmployeeDeveloperTechnicalSkill.cs" />
     <Compile Include="ViewModels\EmployeeTechnicalSkillAndScale.cs" />
