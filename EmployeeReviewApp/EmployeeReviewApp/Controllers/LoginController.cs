@@ -58,7 +58,7 @@ namespace EmployeeReviewApp.Controllers
                 FormsAuthentication.SetAuthCookie(userId.ToString(), false);
                 return RedirectToAction("Index", "EmployeeDeveloperTechnicalSkill", new { hdnCount = 0,userId = userId});
             }
-            
+          
         }
 
         // GET: Login/Details/5

@@ -7,14 +7,18 @@
 
 @if (Model.DeveloperSkillScale != null && Model.DeveloperSkillScale.Count > 0)
 {
+    <strong>First Name: </strong>
+    <strong>@Model.DeveloperSkillScale[0].Name </strong><br />
+    <strong>Designation: </strong>
+    <strong>@Model.DeveloperSkillScale[0].Designation </strong><br /><br />
     <table class="table">
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].Designation)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].SkillName)
             </th>
@@ -25,12 +29,12 @@
         @foreach (var devSkill in Model.DeveloperSkillScale)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => devSkill.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => devSkill.Designation)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => devSkill.SkillName)
                 </td>
@@ -42,18 +46,18 @@
     </table>
 }
 <br />
-  <h2>Technical Ratings</h2>
+<h2>Technical Ratings</h2>
 
 @if (Model.TechnicalSkillScale != null && Model.TechnicalSkillScale.Count > 0)
 {
     <table class="table">
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].Designation)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].SkillName)
             </th>
@@ -64,12 +68,12 @@
         @foreach (var techSkill in Model.TechnicalSkillScale)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => techSkill.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => techSkill.Designation)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => techSkill.SkillName)
                 </td>

@@ -154,6 +154,10 @@ D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Newto
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Antlr3.Runtime.pdb
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csprojAssemblyReference.cache
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.Migrations.InitialCreate.resources
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.Migrations.userValidations.resources
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.Migrations.userValidations2.resources
+D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.GenerateResource.cache
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.CoreCompileInputs.cache
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.csproj.CopyComplete
 D:\Directory\Training Code\Project\EmployeeReviewApp\EmployeeReviewApp\obj\Debug\EmployeeReviewApp.dll

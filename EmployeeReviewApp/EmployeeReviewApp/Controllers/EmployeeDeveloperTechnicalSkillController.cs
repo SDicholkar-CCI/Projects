@@ -25,6 +25,7 @@ namespace EmployeeReviewApp.Controllers
             employeeSkillResult.employeeTechnicalSkillAndScales = new List<EmployeeTechnicalSkillAndScale>();
         }
         // GET: EmployeeDeveloperTechnicalSkill
+
         public ActionResult Index(int? hdnCount,int? userId)
         {
             ViewBag.showSignOutButton = true;
@@ -33,7 +34,12 @@ namespace EmployeeReviewApp.Controllers
             {
                 LoginUserId = userId ?? 0;
             }
-            
+
+            //if (employeeDeveloperTechnicalSkill?.employeeDeveloperSkillAndScales ==null)
+            //{
+
+            //}
+
                 if (employeeDeveloperTechnicalSkill != null && employeeDeveloperTechnicalSkill.employeeDeveloperSkillAndScales == null)
                 {
                     employeeDeveloperTechnicalSkill = empReview.GetDeveloperTechnicalSKillAndScales();
