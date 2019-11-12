@@ -1,15 +1,14 @@
-﻿using ScratchCardApp.Models;
+﻿using ScratchCardApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ScratchCardApp.Services
 {
     public interface IScratchCard
     {
-        IEnumerable<User> GetUsers();
-
-        User GetUser(int id);
+        void AddScratchCard(ScratchCardModel scratchCardModel);
     }
 }

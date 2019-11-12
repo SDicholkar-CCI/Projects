@@ -8,32 +8,36 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AutoMapper;
 using ScratchCardApp.DAL;
 using ScratchCardApp.Models;
 using ScratchCardApp.Services;
+using ScratchCardApp.ViewModel;
 
 namespace ScratchCardApp.Controllers
 {
     public class UserController : ApiController
     {
-        private readonly IScratchCard _scratchCard;
-        
-        public UserController(IScratchCard _scratchCard)
+        private readonly IUser _user;
+
+        public UserController(IUser user)
         {
-            this._scratchCard = _scratchCard;
+            this._user = user;
         }
         // GET: api/User
+        [Route("api/User",Name ="GetAllUsers")]
         public IEnumerable<User> GetUsers()
         {
-            var allUsers = _scratchCard.GetUsers();
+            var allUsers = _user.GetUsers();
             return allUsers;
         }
 
         // GET: api/User/5
         [ResponseType(typeof(User))]
+        [Route("api/User/{id}", Name = "GetUser")]
         public IHttpActionResult GetUser(int id)
         {
-            var user = _scratchCard.GetUser(id);
+            var user = _user.GetUser(id);
 
             if (user == null)
             {
@@ -43,71 +47,57 @@ namespace ScratchCardApp.Controllers
             return Ok(user);
         }
 
-        //// PUT: api/User/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutUser(int id, User user)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        // PUT: api/User/5
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        [Route("api/User", Name = "UpdateUser")]
+        public IHttpActionResult PutUser(UserModel userModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (id != user.UserId)
-        //    {
-        //        return BadRequest();
-        //    }
+            var success = _user.UpdateUser(userModel);
+            if(!success)
+            {
+                return InternalServerError();
+            }
 
-        //    db.Entry(user).State = EntityState.Modified;
+            return RedirectToRoute("GetAllUsers", new { id = userModel.UserId });
 
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        }
 
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
+        // POST: api/User
+        [HttpPost]
+        [ResponseType(typeof(User))]
+        [Route("api/User", Name = "AddUser")]
+        public IHttpActionResult PostUser(UserModel userModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //// POST: api/User
-        //[ResponseType(typeof(User))]
-        //public IHttpActionResult PostUser(User user)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            _user.SaveUser(userModel);
 
-        //    db.Users.Add(user);
-        //    db.SaveChanges();
+            return RedirectToRoute("GetAllUsers", new { id = userModel.UserId});
+        }
 
-        //    return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
-        //}
+        // DELETE: api/User/5
+        [HttpDelete]
+        [ResponseType(typeof(User))]
+        [Route("api/User", Name = "DeleteUser")]
+        public IHttpActionResult DeleteUser(int id)
+        {
+            var success = _user.DeleteUser(id);
 
-        //// DELETE: api/User/5
-        //[ResponseType(typeof(User))]
-        //public IHttpActionResult DeleteUser(int id)
-        //{
-        //    User user = db.Users.Find(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Users.Remove(user);
-        //    db.SaveChanges();
-
-        //    return Ok(user);
-        //}
+            if(!success)
+            {
+                return InternalServerError();
+            }
+            return RedirectToRoute("GetAllUsers", new { id = id });
+        }
 
         //protected override void Dispose(bool disposing)
         //{
@@ -116,11 +106,6 @@ namespace ScratchCardApp.Controllers
         //        db.Dispose();
         //    }
         //    base.Dispose(disposing);
-        //}
-
-        //private bool UserExists(int id)
-        //{
-        //    return db.Users.Count(e => e.UserId == id) > 0;
         //}
     }
 }

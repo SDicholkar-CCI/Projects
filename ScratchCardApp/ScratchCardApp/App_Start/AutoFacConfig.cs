@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
+using AutoMapper;
 using ScratchCardApp.DAL;
+using ScratchCardApp.Mapping;
 using ScratchCardApp.Respository;
 using ScratchCardApp.Services;
 using System;
@@ -18,9 +20,12 @@ namespace ScratchCardApp.App_Start
         {
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterType<UserServices>().As<IUser>().InstancePerRequest();
             builder.RegisterType<ScratchCardServices>().As<IScratchCard>().InstancePerRequest();
             builder.RegisterType<ScratchCardContext>().AsSelf().InstancePerRequest();
-            builder.RegisterType<ScratchCardRespository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<UserRespository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ScratchCardRepository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<MapperProfile>().AsSelf().InstancePerRequest();
             var container = builder.Build();
             //GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
             var resolver = new AutofacWebApiDependencyResolver(container);

@@ -1,31 +1,37 @@
-﻿using ScratchCardApp.DAL;
-using ScratchCardApp.Models;
-using ScratchCardApp.Respository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ScratchCardApp.Mapping;
+using ScratchCardApp.Respository;
+using ScratchCardApp.ViewModel;
 
 namespace ScratchCardApp.Services
 {
     public class ScratchCardServices : IScratchCard
     {
-        private readonly ScratchCardRespository _scratchCardRepository;
-
-        public ScratchCardServices(ScratchCardRespository _scratchCardRepository)
+        private readonly ScratchCardRepository _scratchCardRespository;
+        private readonly MapperProfile _mapperProfile;
+        public ScratchCardServices(ScratchCardRepository scratchCardRepository, MapperProfile mapperProfile)
         {
-            this._scratchCardRepository = _scratchCardRepository;
+            this._scratchCardRespository = scratchCardRepository;
+            this._mapperProfile = mapperProfile;
         }
-        public User GetUser(int id)
+        public void AddScratchCard(ScratchCardModel scratchCardModel)
         {
-            var user = _scratchCardRepository.GetUser(id);
-            return user;
-        }
-
-        public IEnumerable<User> GetUsers()
-        {
-            var allUsers = _scratchCardRepository.GetUsers();
-            return allUsers;
+            if (scratchCardModel != null)
+            {
+                try
+                {
+                    scratchCardModel.ScratchCardExpiryDate = DateTime.Now;
+                    var scratchCard = _mapperProfile.MapperScratchCardEntity(scratchCardModel);
+                    _scratchCardRespository.AddScratchCard(scratchCard);
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

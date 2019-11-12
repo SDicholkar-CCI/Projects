@@ -51,6 +51,7 @@ D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Antlr3.Runt
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.Mvc.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.WebApi.dll
+D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\AutoMapper.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.SqlServer.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
@@ -72,6 +73,8 @@ D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.xml
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.Mvc.xml
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.WebApi.pdb
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.WebApi.xml
+D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\AutoMapper.pdb
+D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\AutoMapper.xml
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.xml
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.SqlServer.xml
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Newtonsoft.Json.xml
