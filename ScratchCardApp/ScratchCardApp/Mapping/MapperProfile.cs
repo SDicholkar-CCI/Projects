@@ -28,17 +28,22 @@ namespace ScratchCardApp.Mapping
             return user;
         }
 
-        public ScratchCard MapperScratchCardEntity(ScratchCardModel scratchCardModel)
+        public MapperConfiguration MapperScratchCardEntity()
         {
             var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ScratchCardModel, ScratchCard>();
+                cfg.CreateMap<ScratchCardModel, ScratchCard>().ReverseMap();
             });
 
-            IMapper iMapper = config.CreateMapper();
+            return config;
+        }
 
-            var scratchCard = iMapper.Map<ScratchCardModel, ScratchCard>(scratchCardModel);
+        public MapperConfiguration MapperTransactionEntity()
+        {
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<TransactionModel, Transaction>().ReverseMap();
+            });
 
-            return scratchCard;
+            return config;
         }
 
     }

@@ -10,5 +10,9 @@ namespace ScratchCardApp.Services
     public interface IScratchCard
     {
         void AddScratchCard(ScratchCardModel scratchCardModel);
+
+        IEnumerable<ScratchCardModel> GetAllScratchCards();
+
+        IEnumerable<ScratchCardModel> GetAllUnusedScratchCards();
     }
 }

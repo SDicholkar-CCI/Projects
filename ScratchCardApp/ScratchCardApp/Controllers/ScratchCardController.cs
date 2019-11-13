@@ -26,57 +26,10 @@ namespace ScratchCardApp.Controllers
 
         // GET: api/ScratchCard
         [Route("api/ScratchCard",Name ="GetAllScratchCards")]
-        public IQueryable<ScratchCard> GetScratchCards()
+        public IEnumerable<ScratchCardModel> GetScratchCards()
         {
-            return db.ScratchCards;
-        }
-
-        // GET: api/ScratchCard/5
-        [ResponseType(typeof(ScratchCard))]
-        public IHttpActionResult GetScratchCard(int id)
-        {
-            ScratchCard scratchCard = db.ScratchCards.Find(id);
-            if (scratchCard == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(scratchCard);
-        }
-
-        // PUT: api/ScratchCard/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutScratchCard(int id, ScratchCard scratchCard)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != scratchCard.ScratchCardGUID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(scratchCard).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScratchCardExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            var scratchCards = _scratchCard.GetAllScratchCards();
+            return scratchCards;
         }
 
         // POST: api/ScratchCard
@@ -85,7 +38,6 @@ namespace ScratchCardApp.Controllers
         [Route("api/ScratchCard", Name = "AddScratchCards")]
         public IHttpActionResult PostScratchCard(ScratchCardModel scratchCardModel)
         {
-            var date = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -95,34 +47,14 @@ namespace ScratchCardApp.Controllers
             return RedirectToRoute("GetAllScratchCards", new { id = scratchCardModel.ScratchCardGUID} );
         }
 
-        // DELETE: api/ScratchCard/5
-        [ResponseType(typeof(ScratchCard))]
-        public IHttpActionResult DeleteScratchCard(int id)
+        [HttpGet]
+        [Route("api/ScratchCard/GetAllUnusedScratchCards", Name = "UnusedScratchCards")]
+        public IEnumerable<ScratchCardModel> GetAllUnusedScratchCards()
         {
-            ScratchCard scratchCard = db.ScratchCards.Find(id);
-            if (scratchCard == null)
-            {
-                return NotFound();
-            }
+            var unusedScratchCards = _scratchCard.GetAllUnusedScratchCards();
+            return unusedScratchCards;
 
-            db.ScratchCards.Remove(scratchCard);
-            db.SaveChanges();
-
-            return Ok(scratchCard);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool ScratchCardExists(int id)
-        {
-            return db.ScratchCards.Count(e => e.ScratchCardGUID == id) > 0;
-        }
     }
 }

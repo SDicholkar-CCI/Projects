@@ -1,3 +1,4 @@
+D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\ScratchCardApp.dll.config
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\ScratchCardApp.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\ScratchCardApp.pdb
@@ -52,7 +53,6 @@ D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.Mvc.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Autofac.Integration.WebApi.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\AutoMapper.dll
-D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\EntityFramework.SqlServer.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\Directory\Training Code\Project\ScratchCardApp\ScratchCardApp\bin\Microsoft.Web.Infrastructure.dll

@@ -69,5 +69,11 @@ namespace ScratchCardApp.Respository
             }
         }
 
+        public bool IsValidUser(int userid)
+        {
+            var validUser = _context.Users.Any(user => user.UserId == userid);
+            return validUser;
+        }
+
     }
 }

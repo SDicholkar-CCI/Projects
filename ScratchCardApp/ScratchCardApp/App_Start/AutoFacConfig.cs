@@ -22,9 +22,11 @@ namespace ScratchCardApp.App_Start
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterType<UserServices>().As<IUser>().InstancePerRequest();
             builder.RegisterType<ScratchCardServices>().As<IScratchCard>().InstancePerRequest();
+            builder.RegisterType<TransactionServices>().As<ITransaction>().InstancePerRequest();
             builder.RegisterType<ScratchCardContext>().AsSelf().InstancePerRequest();
             builder.RegisterType<UserRespository>().AsSelf().InstancePerRequest();
             builder.RegisterType<ScratchCardRepository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<TransactionRespository>().AsSelf().InstancePerRequest();
             builder.RegisterType<MapperProfile>().AsSelf().InstancePerRequest();
             var container = builder.Build();
             //GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
