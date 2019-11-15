@@ -1,0 +1,71 @@
+﻿@model EmployeeReviewApp.ViewModels.EmployeeDeveloperTechnicalSkill
+@{
+    ViewBag.Title = "Employee Review";
+}
+<head><script src="~/Scripts/jquery-3.3.1.js"></script></head>
+<h3>Form</h3>
+@using (Html.BeginForm("SaveDeveloperSkill", "EmployeeDeveloperTechnicalSkill",FormMethod.Post))
+{
+<div class="form-horizontal">
+    <input type="hidden" id="hdnCount" name="hdnCount" value="@ViewBag.Count" />
+    @if (Model.employeeDeveloperSkillAndScales != null && Model.employeeDeveloperSkillAndScales.Count > 0)
+    {
+        foreach (var devSkill in Model.employeeDeveloperSkillAndScales)
+        {
+            <input type="hidden" id="hdnDeveloperSkill" name="hdnDeveloperSkill" value="@devSkill.developerSkill.DeveloperSkillId" />
+            <ol>
+                <li style="list-style-type:none" value="@devSkill.developerSkill.DeveloperSkillId">@devSkill.developerSkill.DeveloperSkillName</li>
+                @foreach (var devScale in devSkill.developerSkillScales)
+                {
+                    <li style="list-style-type:none">
+                        <ul>
+                            <li>
+                                <input type="radio"
+                                       name="btnRadioScaleId"
+                                       value="@devScale.DeveloperSkillScaleId"
+                                       @(Html.Raw(true ? "checked=\"checked\"" : "")) /> @devScale.DeveloperSkillScaleName
+                                </li>
+                            </ul>
+                        </li>
+
+                    }
+            </ol>
+        }
+
+
+    }
+    else if (Model.employeeTechnicalSkillAndScales != null && Model.employeeTechnicalSkillAndScales.Count > 0)
+    {
+        foreach (var techSkill in Model.employeeTechnicalSkillAndScales)
+        {
+            <input type="hidden" id="hdnDeveloperSkill" name="hdnDeveloperSkill" value="@techSkill.technicalSkill.TechnicalSkillId" />
+            <ol>
+                <li style="list-style-type:none" value="@techSkill.technicalSkill.TechnicalSkillId">@techSkill.technicalSkill.TechnicalSkillName</li>
+                @foreach (var techScale in techSkill.technicalSkillScales)
+                {
+                    <li style="list-style-type:none">
+                        <ul>
+                            <li>
+                                <input type="radio"
+                                       name="btnRadioScaleId"
+                                       value="@techScale.TechnicalSkillScaleId"
+                                       @(Html.Raw(true ? "checked=\"checked\"" : "")) /> @techScale.TechnicalSkillScaleName
+                                </li>
+                            </ul>
+                        </li>
+
+                    }
+            </ol>
+        }
+    }
+    <div class="form-group">
+        @Html.TextArea("description")
+    </div>
+
+    <div class="form-group">
+       <input type="submit" id="btnNext" value="Next" />
+    </div>
+ 
+
+</div>
+}

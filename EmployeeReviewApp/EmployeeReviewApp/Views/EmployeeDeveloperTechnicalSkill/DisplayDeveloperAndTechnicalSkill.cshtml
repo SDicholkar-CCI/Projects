@@ -1,0 +1,89 @@
+﻿@model EmployeeReviewApp.ViewModels.DisplayDeveloperTechnicalSkillAndScale
+@{
+    ViewBag.Title = "DisplayDeveloperAndTechnicalSkill";
+}
+
+<h2>Developer Ratings</h2>
+
+@if (Model.DeveloperSkillScale != null && Model.DeveloperSkillScale.Count > 0)
+{
+    <strong>First Name: </strong>
+    <strong>@Model.DeveloperSkillScale[0].Name </strong><br />
+    <strong>Designation: </strong>
+    <strong>@Model.DeveloperSkillScale[0].Designation </strong><br /><br />
+    <table class="table">
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].Designation)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].SkillName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperSkillScale[0].ScaleName)
+            </th>
+        </tr>
+        @foreach (var devSkill in Model.DeveloperSkillScale)
+        {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => devSkill.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => devSkill.Designation)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => devSkill.SkillName)
+                </td>
+                <td>
+                    <label style="font-weight:normal" title="@devSkill.Description">@devSkill.ScaleName</label>
+                </td>
+            </tr>
+        }
+    </table>
+}
+<br />
+<h2>Technical Ratings</h2>
+
+@if (Model.TechnicalSkillScale != null && Model.TechnicalSkillScale.Count > 0)
+{
+    <table class="table">
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].Designation)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].SkillName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TechnicalSkillScale[0].ScaleName)
+            </th>
+        </tr>
+        @foreach (var techSkill in Model.TechnicalSkillScale)
+        {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => techSkill.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => techSkill.Designation)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => techSkill.SkillName)
+                </td>
+                <td>
+                    <label style="font-weight:normal" title="@techSkill.Description">@techSkill.ScaleName</label>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
+
