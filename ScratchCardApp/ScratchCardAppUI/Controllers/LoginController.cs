@@ -19,9 +19,18 @@ namespace ScratchCardAppUI.Controllers
         [ActionName("LoginUser")]
         public ActionResult ValidateUserAndLogin(Login login)
         {
-            string queryString = "User/LoginDetails?firstName=" + login.FirstName + "&password=" + login.Password;
-            HttpResponseMessage response = APIClient.webApiClient.GetAsync("User").Result;
-            return View();
+            string queryString = "User/LoginDetails/" + login.FirstName + "/" + login.Password;
+            HttpResponseMessage response = APIClient.webApiClient.GetAsync(queryString).Result;
+            var isValidUser = response.Content.ReadAsAsync<bool>().Result;
+            if(isValidUser)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("Index");
+            }
+            
         }
     }
 }

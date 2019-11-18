@@ -2,11 +2,13 @@
 using Autofac.Integration.WebApi;
 using AutoMapper;
 using ScratchCardApp.DAL;
+using ScratchCardApp.ErrorHandling;
 using ScratchCardApp.Mapping;
 using ScratchCardApp.Respository;
 using ScratchCardApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Web;

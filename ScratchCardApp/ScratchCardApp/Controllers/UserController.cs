@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,40 +11,72 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AutoMapper;
 using ScratchCardApp.DAL;
+using ScratchCardApp.ErrorHandling;
 using ScratchCardApp.Models;
 using ScratchCardApp.Services;
 using ScratchCardApp.ViewModel;
+using Serilog;
 
 namespace ScratchCardApp.Controllers
 {
     public class UserController : ApiController
     {
         private readonly IUser _user;
-
+        private readonly StackFrame _stackFrame;
         public UserController(IUser user)
         {
             this._user = user;
+            this._stackFrame = new StackFrame();
+            ApplicationError.LogConfigurations();
         }
         // GET: api/User
         [Route("api/User",Name ="GetAllUsers")]
-        public IEnumerable<User> GetUsers()
+        public IHttpActionResult GetUsers()
         {
-            var allUsers = _user.GetUsers();
-            return allUsers;
+            try
+            {
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetUsers() ");
+                var allUsers = _user.GetUsers();
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetUsers() Method Executed Successfully");
+                return Ok(allUsers);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
+                return InternalServerError();
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         // GET: api/User/5
         [Route("api/User/{id}", Name = "GetUser")]
         public IHttpActionResult GetUser(int id)
         {
-            var user = _user.GetUser(id);
-
-            if (user == null)
+            try
             {
-                return NotFound();
-            }
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetUser() ");
+                var user = _user.GetUser(id);
 
-            return Ok(user);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetUser() Method Executed Successfully");
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
+                return InternalServerError();
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         // PUT: api/User/5
@@ -52,18 +85,31 @@ namespace ScratchCardApp.Controllers
         [Route("api/User", Name = "UpdateUser")]
         public IHttpActionResult PutUser(UserModel userModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: PutUser() ");
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var success = _user.UpdateUser(userModel);
-            if(!success)
+                var success = _user.UpdateUser(userModel);
+                if (!success)
+                {
+                    return InternalServerError();
+                }
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "PutUser() Method Executed Successfully");
+                return RedirectToRoute("GetAllUsers", new { id = userModel.UserId });
+            }
+            catch (Exception ex)
             {
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
                 return InternalServerError();
             }
-
-            return RedirectToRoute("GetAllUsers", new { id = userModel.UserId });
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
         }
 
@@ -73,14 +119,27 @@ namespace ScratchCardApp.Controllers
         [Route("api/User", Name = "AddUser")]
         public IHttpActionResult PostUser(UserModel userModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: PostUser() ");
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                _user.SaveUser(userModel);
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "PostUser() Method Executed Successfully");
+                return RedirectToRoute("GetAllUsers", new { id = userModel.UserId });
             }
-
-            _user.SaveUser(userModel);
-
-            return RedirectToRoute("GetAllUsers", new { id = userModel.UserId});
+            catch (Exception ex)
+            {
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
+                return InternalServerError();
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         // DELETE: api/User/5
@@ -89,22 +148,51 @@ namespace ScratchCardApp.Controllers
         [Route("api/User", Name = "DeleteUser")]
         public IHttpActionResult DeleteUser(int id)
         {
-            var success = _user.DeleteUser(id);
-
-            if(!success)
+            try
             {
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: DeleteUser() ");
+                var success = _user.DeleteUser(id);
+
+                if (!success)
+                {
+                    return InternalServerError();
+                }
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "DeleteUser() Method Executed Successfully");
+                return RedirectToRoute("GetAllUsers", new { id = id });
+            }
+            catch (Exception ex)
+            {
+
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
                 return InternalServerError();
             }
-            return RedirectToRoute("GetAllUsers", new { id = id });
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        [HttpPost]
+        [HttpGet]
         [ResponseType(typeof(User))]
         [Route("api/User/LoginDetails/{firstName}/{password}", Name = "LoginDetails")]
         public IHttpActionResult LoginDetails(string firstName, string password)
         {
-            var isValid = _user.LoginDetails(firstName, password);
-            return Ok(isValid);
+            try
+            {
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
+                var isValid = _user.LoginDetails(firstName, password);
+                Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
+                return Ok(isValid);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
+                return InternalServerError();
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         //protected override void Dispose(bool disposing)
