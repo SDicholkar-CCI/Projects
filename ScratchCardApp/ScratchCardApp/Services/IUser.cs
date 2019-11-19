@@ -13,12 +13,12 @@ namespace ScratchCardApp.Services
 
         User GetUser(int id);
 
-        void SaveUser(UserModel user);
+        UserModel SaveUser(UserModel user);
 
         bool DeleteUser(int id);
 
         bool UpdateUser(UserModel userModel);
 
-        bool LoginDetails(string firstName, string password);
+        int LoginDetails(string firstName, string password);
     }
 }

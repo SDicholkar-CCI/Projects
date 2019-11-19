@@ -31,7 +31,7 @@ namespace ScratchCardApp.Services
         {
             Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: AddTransaction()");
             TransactionModel transactionResultModel = new TransactionModel();
-            if (transactionModel != null && transactionModel.ScratchCardGUID > 0 && transactionModel.UserId > 0)
+            if (transactionModel?.ScratchCardGUID > 0 && transactionModel.UserId > 0)
             {
                 int scratchCardBalanceAmount = _transactionRespository.GetScratchCardBalanceAmount(transactionModel.ScratchCardGUID);
                 bool isValidScratchCard = _scratchCardRepository.IsUnusedAndValidScratchCardId(transactionModel.ScratchCardGUID);

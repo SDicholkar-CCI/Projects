@@ -1,63 +1,57 @@
 ﻿@model IEnumerable<ScratchCardAppUI.ViewModel.UserTransactionDetails>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Add Transaction";
 }
 
-<h2>Index</h2>
-
+<br />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add Transaction", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TransactionAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateofTransaction)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BalanceAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScratchCardGUID)
-        </th>
-        <th></th>
-    </tr>
+<br />
+@if (Model != null)
+{
+    <label>Full Name : @Model.ToList()[0].FirstName @Model.ToList()[0].LastName</label>
+    <center><h4>Transaction Details</h4></center>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateofTransaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BalanceAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScratchCardGUID)
+            </th>
+            @*<th></th>*@
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TransactionAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateofTransaction)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BalanceAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ScratchCardGUID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateofTransaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BalanceAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScratchCardGUID)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+            </tr>
+        }
+
+    </table>
 }
-
-</table>

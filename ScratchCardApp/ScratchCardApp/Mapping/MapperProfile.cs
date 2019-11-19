@@ -15,17 +15,13 @@ namespace ScratchCardApp.Mapping
             
         }
 
-        public User MapperUserEntity(UserModel userModel)
+        public MapperConfiguration MapperUserEntity()
         {
             var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<UserModel, User>();
+                cfg.CreateMap<UserModel, User>().ReverseMap();
             });
 
-            IMapper iMapper = config.CreateMapper();
-
-            var user = iMapper.Map<UserModel, User>(userModel);
-
-            return user;
+            return config;
         }
 
         public MapperConfiguration MapperScratchCardEntity()

@@ -30,7 +30,7 @@ namespace ScratchCardApp.Controllers
         }
 
         // GET: api/ScratchCard
-        [Route("api/ScratchCard",Name ="GetAllScratchCards")]
+        [Route("api/ScratchCard", Name = "GetAllScratchCards")]
         public IHttpActionResult GetScratchCards()
         {
             try
@@ -40,7 +40,7 @@ namespace ScratchCardApp.Controllers
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetScratchCards() Method Executed Successfully");
                 return Ok(scratchCards);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
                 return InternalServerError();
@@ -69,7 +69,7 @@ namespace ScratchCardApp.Controllers
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "PostScratchCard() Method Executed Successfully");
                 return RedirectToRoute("GetAllScratchCards", new { id = scratchCardModel.ScratchCardGUID });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
                 return InternalServerError();
@@ -91,18 +91,25 @@ namespace ScratchCardApp.Controllers
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetAllUnusedScratchCards() Method Executed Successfully");
                 return Ok(unusedScratchCards);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log.Fatal("Error Message: "+ ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
+                Log.Fatal("Error Message: " + ex.Message + System.Environment.NewLine + System.Environment.NewLine + "Stack Trace Below:" + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine);
                 return InternalServerError();
             }
             finally
             {
                 Log.CloseAndFlush();
             }
-            
+
 
         }
 
+        [HttpGet]
+        [Route("api/ScratchCard/GetScratchCard/{scratchCardGUID}", Name = "GetScratchCard")]
+        public IHttpActionResult GetScratchCard(int scratchCardGUID)
+        {
+            var scratchCard = _scratchCard.GetScratchCard(scratchCardGUID);
+            return Ok(scratchCard);
+        }
     }
 }

@@ -64,14 +64,18 @@ namespace ScratchCardApp.Services
             
         }
 
-        public void SaveUser(UserModel userModel)
+        public UserModel SaveUser(UserModel userModel)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: SaveUser() ");
-                var user = _mapperProfile.MapperUserEntity(userModel);
-                _userRepository.SaveUser(user);
+                var config = _mapperProfile.MapperUserEntity();
+                IMapper iMapper = config.CreateMapper();
+                var user = iMapper.Map<UserModel, User>(userModel);
+                var userEntity = _userRepository.SaveUser(user);
+                var userModelResponse = iMapper.Map<User, UserModel>(userEntity);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "SaveUser() Method Executed Successfully");
+                return userModelResponse;
             }
             catch (Exception ex)
             {
@@ -107,7 +111,9 @@ namespace ScratchCardApp.Services
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: UpdateUser() ");
                 if (userModel != null && userModel.UserId != 0)
                 {
-                    var user = _mapperProfile.MapperUserEntity(userModel);
+                    var config = _mapperProfile.MapperUserEntity();
+                    IMapper iMapper = config.CreateMapper();
+                    var user = iMapper.Map<UserModel, User>(userModel);
                     var success = _userRepository.UpdateUser(user);
                     return success;
                 }
@@ -121,14 +127,14 @@ namespace ScratchCardApp.Services
             }
         }
 
-        public bool LoginDetails(string firstName, string password)
+        public int LoginDetails(string firstName, string password)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
-                var isValid = _userRepository.LoginDetails(firstName, password);
+                var userId = _userRepository.LoginDetails(firstName, password);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
-                return isValid;
+                return userId;
             }
             catch (Exception ex)
             {

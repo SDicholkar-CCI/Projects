@@ -39,7 +39,7 @@ namespace ScratchCardApp.Services
                     _scratchCardRespository.AddScratchCard(scratchCard);
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddScratchCard() Method Executed Successfully");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Error("Error Message: " + ex.Message + " " + ex.StackTrace);
                     throw;
@@ -93,6 +93,15 @@ namespace ScratchCardApp.Services
                 Log.Error("Error Message: " + ex.Message + " " + ex.StackTrace);
                 throw;
             }
+        }
+
+        public ScratchCardModel GetScratchCard(int scratchCardGUID)
+        {
+            var scratchCard = _scratchCardRespository.GetScratchCard(scratchCardGUID);
+            var config = _mapperProfile.MapperScratchCardEntity();
+            IMapper iMapper = config.CreateMapper();
+            var model = iMapper.Map<ScratchCard, ScratchCardModel>(scratchCard);
+            return model;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace ScratchCardApp.Respository
             }
         }
 
-        public void SaveUser(User user)
+        public User SaveUser(User user)
         {
             try
             {
@@ -60,6 +60,7 @@ namespace ScratchCardApp.Respository
                 _context.Users.Add(user);
                 _context.SaveChanges();
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "SaveUser() Method Executed Successfully");
+                return user;
             }
             catch (Exception ex)
             {
@@ -125,14 +126,14 @@ namespace ScratchCardApp.Respository
             }
         }
 
-        public bool LoginDetails(string firstName, string password)
+        public int LoginDetails(string firstName, string password)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
-                var Isvalid = _context.Users.Any(user => user.FirstName == firstName && user.Password == password);
+                var userId = _context.Users.Where(user => user.FirstName == firstName && user.Password == password).Select(user => user.UserId).FirstOrDefault();
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
-                return Isvalid;
+                return userId;
             }
             catch (Exception ex)
             {

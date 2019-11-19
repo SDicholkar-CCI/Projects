@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.ModelBinding.Binders;
 using ScratchCardApp.DAL;
 using ScratchCardApp.ErrorHandling;
 using ScratchCardApp.Models;
@@ -29,8 +30,8 @@ namespace ScratchCardApp.Controllers
             ApplicationError.LogConfigurations();
         }
         
-        [Route("api/Transaction/{userId?}/{dateOfTransaction?}")]
-        public IHttpActionResult GetTransactions(int? userId, DateTime? dateOfTransaction)
+        [Route("api/Transaction/{userId?}")]
+        public IHttpActionResult GetTransactions([FromUri(BinderType = typeof(TypeConverterModelBinder))] int? userId = null, [FromUri(BinderType = typeof(TypeConverterModelBinder))] DateTime? dateOfTransaction = null)
         {
             try
             {
@@ -84,16 +85,16 @@ namespace ScratchCardApp.Controllers
                 }
                 var transactions = _transaction.AddTransaction(transactionModel);
 
-                if (transactions.TransactionID > 0)
-                {
+                //if (transactions.TransactionID > 0)
+                //{
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddTransaction() Method Executed Successfully");
                     return Ok(transactions);
-                }
-                else
-                {
-                    Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddTransaction() Method Executed Successfully");
-                    return Ok("Invalid Transaction");
-                }
+                //}
+                //else
+                //{
+                //    Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddTransaction() Method Executed Successfully");
+                //    return Ok("Invalid Transaction");
+                //}
             }
             catch (Exception ex)
             {

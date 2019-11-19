@@ -76,8 +76,8 @@ namespace ScratchCardApp.Respository
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetAllUnusedScratchCards()");
-                int a = 1, b = 0;
-                int c = a / b;
+                //int a = 1, b = 0;
+                //int c = a / b;
                 var unusedScratchCards = _context.ScratchCards.Where(card => card.Scratched == false);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetAllUnusedScratchCards() Method Executed Successfully");
                 return unusedScratchCards;
@@ -103,6 +103,12 @@ namespace ScratchCardApp.Respository
                 Log.Error("Error Message: " + ex.Message + " " + ex.StackTrace);
                 throw;
             }
+        }
+
+        public ScratchCard GetScratchCard(int scratchCardGUID)
+        {
+            var scratchCard = _context.ScratchCards.Where(card => card.ScratchCardGUID == scratchCardGUID).FirstOrDefault();
+            return scratchCard;
         }
     }
 }

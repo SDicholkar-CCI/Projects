@@ -14,5 +14,7 @@ namespace ScratchCardApp.Services
         IEnumerable<ScratchCardModel> GetAllScratchCards();
 
         IEnumerable<ScratchCardModel> GetAllUnusedScratchCards();
+
+        ScratchCardModel GetScratchCard(int scratchCardGUID);
     }
 }

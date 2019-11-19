@@ -127,9 +127,9 @@ namespace ScratchCardApp.Controllers
                     return BadRequest(ModelState);
                 }
 
-                _user.SaveUser(userModel);
+                var user = _user.SaveUser(userModel);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "PostUser() Method Executed Successfully");
-                return RedirectToRoute("GetAllUsers", new { id = userModel.UserId });
+                return Ok(user);
             }
             catch (Exception ex)
             {
