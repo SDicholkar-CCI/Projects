@@ -11,7 +11,7 @@ namespace ScratchCardApp.Services
     {
         IEnumerable<User> GetUsers();
 
-        User GetUser(int id);
+        User GetUser(string id);
 
         UserModel SaveUser(UserModel user);
 
@@ -19,6 +19,6 @@ namespace ScratchCardApp.Services
 
         bool UpdateUser(UserModel userModel);
 
-        int LoginDetails(string firstName, string password);
+        UserModel LoginDetails(string firstName, string password);
     }
 }

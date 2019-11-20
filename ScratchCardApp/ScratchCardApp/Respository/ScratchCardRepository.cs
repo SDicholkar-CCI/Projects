@@ -19,14 +19,15 @@ namespace ScratchCardApp.Respository
             this._context = context;
             this._stackFrame = new StackFrame();
         }
-        public void AddScratchCard(ScratchCard scratchCardModel)
+        public ScratchCard AddScratchCard(ScratchCard scratchCard)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: AddScratchCard()");
-                _context.ScratchCards.Add(scratchCardModel);
+                _context.ScratchCards.Add(scratchCard);
                 _context.SaveChanges();
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddScratchCard() Method Executed Successfully");
+                return scratchCard;
             }
             catch (Exception ex)
             {
@@ -57,7 +58,7 @@ namespace ScratchCardApp.Respository
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: DeactiveUnusedScratchCards()");
                 _context.ScratchCards.
-                    Where(x => x.Scratched == false)
+                    Where(x => x.Scratched == false && x.ScratchCardExpiryDate<DateTime.Now)
                     .ToList()
                     .ForEach(s => s.IsActive = false);
 
@@ -78,7 +79,7 @@ namespace ScratchCardApp.Respository
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetAllUnusedScratchCards()");
                 //int a = 1, b = 0;
                 //int c = a / b;
-                var unusedScratchCards = _context.ScratchCards.Where(card => card.Scratched == false);
+                var unusedScratchCards = _context.ScratchCards.Where(card => card.Scratched == false && card.IsActive == true);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetAllUnusedScratchCards() Method Executed Successfully");
                 return unusedScratchCards;
             }
@@ -94,7 +95,7 @@ namespace ScratchCardApp.Respository
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: IsUnusedAndValidScratchCardId()");
-                var validScratchCard = _context.ScratchCards.Any(card => card.IsActive && card.Scratched == false && card.ScratchCardGUID == scratchCardGUID);
+                var validScratchCard = _context.ScratchCards.Any(card => card.IsActive && /*card.Scratched == false &&*/ card.ScratchCardGUID == scratchCardGUID);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "IsUnusedAndValidScratchCardId() Method Executed Successfully");
                 return validScratchCard;
             }
@@ -108,6 +109,18 @@ namespace ScratchCardApp.Respository
         public ScratchCard GetScratchCard(int scratchCardGUID)
         {
             var scratchCard = _context.ScratchCards.Where(card => card.ScratchCardGUID == scratchCardGUID).FirstOrDefault();
+            return scratchCard;
+        }
+
+        public List<int> GetScratchCardUsedbyUser(int userId)
+        {
+            
+            var scratchCard = (from tran in _context.Transactions
+                               join card in _context.ScratchCards
+                               on tran.ScratchCardGUID equals card.ScratchCardGUID
+                               where tran.UserId == userId && card.Amount > 0
+                               select card.ScratchCardGUID 
+                               ).Distinct().ToList();
             return scratchCard;
         }
     }

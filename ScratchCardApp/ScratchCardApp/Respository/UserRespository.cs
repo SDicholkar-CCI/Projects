@@ -20,12 +20,12 @@ namespace ScratchCardApp.Respository
             this._context = context;
             this._stackFrame = new StackFrame();
         }
-        public User GetUser(int id)
+        public User GetUser(string firstName)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetUser() ");
-                var user = _context.Users.Find(id);
+                var user = _context.Users.Where(u => u.FirstName.Equals(firstName)).FirstOrDefault();
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetUser() Method Executed Successfully");
                 return user;
             }
@@ -126,14 +126,14 @@ namespace ScratchCardApp.Respository
             }
         }
 
-        public int LoginDetails(string firstName, string password)
+        public User LoginDetails(string firstName, string password)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
-                var userId = _context.Users.Where(user => user.FirstName == firstName && user.Password == password).Select(user => user.UserId).FirstOrDefault();
+                var User = _context.Users.Where(user => user.FirstName == firstName && user.Password == password).FirstOrDefault();
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
-                return userId;
+                return User;
             }
             catch (Exception ex)
             {

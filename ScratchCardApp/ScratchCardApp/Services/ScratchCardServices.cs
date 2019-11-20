@@ -24,8 +24,9 @@ namespace ScratchCardApp.Services
             this._mapperProfile = mapperProfile;
             this._stackFrame = new StackFrame();
         }
-        public void AddScratchCard(ScratchCardModel scratchCardModel)
+        public ScratchCardModel AddScratchCard(ScratchCardModel scratchCardModel)
         {
+            ScratchCardModel scratchCardModelResponse = new ScratchCardModel();
             Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: AddScratchCard() ");
             if (scratchCardModel != null)
             {
@@ -35,8 +36,10 @@ namespace ScratchCardApp.Services
                     _scratchCardRespository.DeactiveUnusedScratchCards();
                     var config = _mapperProfile.MapperScratchCardEntity();
                     IMapper iMapper = config.CreateMapper();
-                    var scratchCard = iMapper.Map<ScratchCardModel, ScratchCard>(scratchCardModel);
-                    _scratchCardRespository.AddScratchCard(scratchCard);
+                    var scratchCardEntity = iMapper.Map<ScratchCardModel, ScratchCard>(scratchCardModel);
+                    var scratchCardEntityResponse = _scratchCardRespository.AddScratchCard(scratchCardEntity);
+
+                    scratchCardModelResponse = iMapper.Map<ScratchCard, ScratchCardModel>(scratchCardEntityResponse);
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "AddScratchCard() Method Executed Successfully");
                 }
                 catch (Exception ex)
@@ -45,6 +48,7 @@ namespace ScratchCardApp.Services
                     throw;
                 }
             }
+            return scratchCardModelResponse;
         }
 
         public IEnumerable<ScratchCardModel> GetAllScratchCards()
@@ -102,6 +106,12 @@ namespace ScratchCardApp.Services
             IMapper iMapper = config.CreateMapper();
             var model = iMapper.Map<ScratchCard, ScratchCardModel>(scratchCard);
             return model;
+        }
+
+        public List<int> GetScratchCardUsedbyUser(int userId)
+        {
+            var scratchCard = _scratchCardRespository.GetScratchCardUsedbyUser(userId);
+            return scratchCard;
         }
     }
 }

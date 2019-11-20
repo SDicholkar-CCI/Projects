@@ -6,13 +6,32 @@
 
 <br />
 <p>
-    @Html.ActionLink("Add Transaction", "Create")
+    @Html.ActionLink("Add Transaction", "Create")<br />
+    <label id="lblAddScratchCard" name="lblAddScratchCard" style="cursor:pointer; color:#007bff;">Add Scratch Card</label><br />
+
+    @using (Html.BeginForm())
+    {
+        <div id="divAddScratchCard">
+            <label id="lblScratchCardAmount" name="lblScratchCardAmount" style="font-weight:bold;">Amount</label><br />
+            <input type="number" id="txtScratchCardAmount" class="form-control-sm" />
+            <div class="form-group" style="padding-top:6px;">
+                <input id="btnSubmit" type="button" value="Save" class="btn-sm" />
+            </div>
+        </div>
+    }
 </p>
 <br />
-@if (Model != null)
+@if (Model?.Count() > 0)
 {
-    <label>Full Name : @Model.ToList()[0].FirstName @Model.ToList()[0].LastName</label>
-    <center><h4>Transaction Details</h4></center>
+   <label>Full Name : @Model.ToList()[0].FirstName @Model.ToList()[0].LastName</label>
+}
+else
+{
+    <label>Full Name : @ViewBag.FirstName @ViewBag.LastName</label>
+}
+<center><h4>Transaction Details</h4></center>
+@if (Model?.Count() > 0)
+{
     <table class="table">
         <tr>
             <th>
@@ -54,4 +73,39 @@
         }
 
     </table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divAddScratchCard").hide();
+
+
+            $("#lblAddScratchCard").click(function () {
+                $('#txtScratchCardAmount').val('');
+                $("#divAddScratchCard").slideToggle(1000);
+            });
+
+            $("#btnSubmit").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "ScratchCard/SaveScratchCard",
+                    data: {
+                        txtScratchCardAmount: parseInt($('#txtScratchCardAmount').val())
+                    },
+                    success: function (data) {
+                        if (data.ScratchCardGUID > 0) {
+                            $("#divAddScratchCard").slideUp(500, function () {
+                                alert("Scratch Card Added");
+                            });
+
+                        }
+                    },
+
+                });
+            });
+        });
+    </script>
 }

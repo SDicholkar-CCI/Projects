@@ -11,11 +11,11 @@ namespace ScratchCardAppUI.ViewModel
     {
         public int UserId { get; set; }
         [Required]
-        [DataType(DataType.Text)]
+        [RegularExpression(@"^[a-zA-Z]+[ a-zA-Z-_]*$", ErrorMessage = "Use Characters only")]
         [Display(Name ="First Name")]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
-        [DataType(DataType.Text)]
+        [RegularExpression(@"^[a-zA-Z]+[ a-zA-Z-_]*$", ErrorMessage = "Use Characters only")]
         [Required]
         public string LastName { get; set; }
         [Required]

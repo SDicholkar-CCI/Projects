@@ -52,13 +52,13 @@ namespace ScratchCardApp.Controllers
         }
 
         // GET: api/User/5
-        [Route("api/User/{id}", Name = "GetUser")]
-        public IHttpActionResult GetUser(int id)
+        [Route("api/User/{firstName}", Name = "GetUser")]
+        public IHttpActionResult GetUser(string firstName)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetUser() ");
-                var user = _user.GetUser(id);
+                var user = _user.GetUser(firstName);
 
                 if (user == null)
                 {
@@ -180,9 +180,9 @@ namespace ScratchCardApp.Controllers
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
-                var isValid = _user.LoginDetails(firstName, password);
+                var user = _user.LoginDetails(firstName, password);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
-                return Ok(isValid);
+                return Ok(user);
             }
             catch (Exception ex)
             {

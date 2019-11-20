@@ -40,14 +40,14 @@ namespace ScratchCardApp.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
-                var transaction = _transaction.GetTransactions(userId, dateOfTransaction);
                 if (userId == null && dateOfTransaction == null)
                 {
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetTransactions() Method Executed Successfully");
                     return NotFound();
                 }
 
+                var transaction = _transaction.GetTransactions(userId, dateOfTransaction);
+                
                 if (transaction.Count() > 0)
                 {
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetTransactions() Method Executed Successfully");
@@ -56,7 +56,7 @@ namespace ScratchCardApp.Controllers
                 else
                 {
                     Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetTransactions() Method Executed Successfully");
-                    return Ok("No Records Found");
+                    return Ok(transaction);
                 }
             }
             catch (Exception ex)

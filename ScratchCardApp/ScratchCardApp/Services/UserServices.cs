@@ -26,15 +26,15 @@ namespace ScratchCardApp.Services
             this._stackFrame = new StackFrame();
         }
 
-        public User GetUser(int id)
+        public User GetUser(string firstName)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetUser() ");
                 User user = new User();
-                if (id != 0)
+                if (firstName != "")
                 {
-                    user = _userRepository.GetUser(id);
+                    user = _userRepository.GetUser(firstName);
                 }
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "GetUser() Method Executed Successfully");
                 return user;
@@ -127,14 +127,17 @@ namespace ScratchCardApp.Services
             }
         }
 
-        public int LoginDetails(string firstName, string password)
+        public UserModel LoginDetails(string firstName, string password)
         {
             try
             {
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: LoginDetails() ");
-                var userId = _userRepository.LoginDetails(firstName, password);
+                var userEntity = _userRepository.LoginDetails(firstName, password);
+                var config = _mapperProfile.MapperUserEntity();
+                IMapper iMapper = config.CreateMapper();
+                var userResponse = iMapper.Map<User, UserModel>(userEntity);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "LoginDetails() Method Executed Successfully");
-                return userId;
+                return userResponse;
             }
             catch (Exception ex)
             {

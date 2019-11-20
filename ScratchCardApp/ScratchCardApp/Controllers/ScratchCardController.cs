@@ -65,9 +65,9 @@ namespace ScratchCardApp.Controllers
                     Log.Error("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "NameSpace: " + _stackFrame.GetMethod().DeclaringType.Namespace + " Method Name: GetAllUnusedScratchCards() Error Message: Error in ModelState binding");
                     return BadRequest(ModelState);
                 }
-                _scratchCard.AddScratchCard(scratchCardModel);
+                var scartchCard = _scratchCard.AddScratchCard(scratchCardModel);
                 Log.Information("File Name: " + _stackFrame.GetMethod().DeclaringType.Name + ".cs " + "PostScratchCard() Method Executed Successfully");
-                return RedirectToRoute("GetAllScratchCards", new { id = scratchCardModel.ScratchCardGUID });
+                return Ok(scartchCard);
             }
             catch (Exception ex)
             {
@@ -109,6 +109,14 @@ namespace ScratchCardApp.Controllers
         public IHttpActionResult GetScratchCard(int scratchCardGUID)
         {
             var scratchCard = _scratchCard.GetScratchCard(scratchCardGUID);
+            return Ok(scratchCard);
+        }
+
+        [HttpGet]
+        [Route("api/ScratchCard/GetScratchCardUsedbyUser/{userId}", Name = "GetScratchCardUsedbyUser")]
+        public IHttpActionResult GetScratchCardUsedbyUser(int userId)
+        {
+            var scratchCard = _scratchCard.GetScratchCardUsedbyUser(userId);
             return Ok(scratchCard);
         }
     }
